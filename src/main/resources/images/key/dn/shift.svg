@@ -204,6 +204,14 @@
      y="1.1564845"
      rx="1.2175721"
      ry="1.2175721" />
+  <path
+     style="fill:none;stroke:#191d22;stroke-width:0.401112;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+     d="M 6.7799304,9.5151136 V 5.5952191 l 1.290321,1.6110921"
+     id="path873" />
+  <path
+     style="fill:none;stroke:#191d22;stroke-width:0.401112;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+     d="M 6.7799309,9.5151136 V 5.5952398 L 5.4896093,7.2063146"
+     id="path875" />
   <circle
      id="path854"
      style="fill:#207bb3;stroke:#000000;stroke-width:0.264586"

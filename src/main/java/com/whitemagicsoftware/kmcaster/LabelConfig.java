@@ -18,6 +18,7 @@ import static javax.swing.SwingConstants.*;
  */
 public enum LabelConfig {
   LABEL_SHIFT( KEY_SHIFT ),
+  LABEL_SUPER( KEY_SUPER ),
   LABEL_CTRL( KEY_CTRL ),
   LABEL_ALT( KEY_ALT ),
   LABEL_REGULAR( KEY_REGULAR ),

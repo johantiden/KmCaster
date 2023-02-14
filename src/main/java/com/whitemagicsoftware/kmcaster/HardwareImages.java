@@ -54,7 +54,8 @@ public final class HardwareImages {
   private final static Map<HardwareSwitch, String> FILE_NAME_PREFIXES = Map.of(
       KEY_ALT, "medium",
       KEY_CTRL, "medium",
-      KEY_SHIFT, "long",
+      KEY_SHIFT, "shift",
+      KEY_SUPER, "long",
       KEY_REGULAR, "short"
   );
 
@@ -73,6 +74,7 @@ public final class HardwareImages {
       KEY_ALT, new Insets( 10, 11, 12, 11 ),
       KEY_CTRL, new Insets( 10, 11, 12, 11 ),
       KEY_SHIFT, new Insets( 10, 50, 12, 11 ),
+      KEY_SUPER, new Insets( 10, 11, 12, 11 ),
       KEY_REGULAR, new Insets( 3, 7, 6, 7 ),
       MOUSE_EXTRA, new Insets( 27, 5, 11, 5 )
   );

@@ -45,6 +45,7 @@ public enum HardwareSwitch {
   MOUSE_SCROLL_R( "r" ),
   KEY_SHIFT( "shift", SHIFT_MASK ),
   KEY_CTRL( "ctrl", CTRL_MASK ),
+  KEY_SUPER( "super", META_MASK ),
   KEY_ALT( "alt", ALT_MASK ),
   KEY_REGULAR( "regular" );
 
@@ -58,10 +59,10 @@ public enum HardwareSwitch {
   };
 
   private final static HardwareSwitch[] mKeyboardSwitches =
-      {KEY_SHIFT, KEY_CTRL, KEY_ALT, KEY_REGULAR};
+      {KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT, KEY_REGULAR};
 
   private final static HardwareSwitch[] mModifierSwitches =
-      {KEY_SHIFT, KEY_CTRL, KEY_ALT};
+      {KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT};
 
   private final static HardwareSwitch[] mRegularSwitches =
       {KEY_REGULAR};

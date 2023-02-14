@@ -222,6 +222,8 @@ public final class KeyboardListener
   enum HandedSwitch {
     KEY_SHIFT_LEFT( KEY_SHIFT ),
     KEY_SHIFT_RIGHT( KEY_SHIFT ),
+    KEY_SUPER_LEFT( KEY_SUPER ),
+    KEY_SUPER_RIGHT( KEY_SUPER ),
     KEY_CTRL_LEFT( KEY_CTRL ),
     KEY_CTRL_RIGHT( KEY_CTRL ),
     KEY_ALT_LEFT( KEY_ALT ),
@@ -250,7 +252,9 @@ public final class KeyboardListener
       entry( 162, KEY_CTRL_LEFT ),
       entry( 163, KEY_CTRL_RIGHT ),
       entry( 164, KEY_ALT_LEFT ),
-      entry( 165, KEY_ALT_RIGHT )
+      entry( 165, KEY_ALT_RIGHT ),
+      entry( 91, KEY_SUPER_LEFT ),
+      entry( 92, KEY_SUPER_RIGHT )
     );
 
   /**
@@ -271,7 +275,9 @@ public final class KeyboardListener
       entry( 65511, KEY_ALT_LEFT ),
       entry( 65512, KEY_ALT_RIGHT ),
       entry( 65513, KEY_ALT_LEFT ),
-      entry( 65514, KEY_ALT_RIGHT )
+      entry( 65514, KEY_ALT_RIGHT ),
+      entry( 65515, KEY_SUPER_LEFT ),
+      entry( 65516, KEY_SUPER_RIGHT )
     );
 
   /**

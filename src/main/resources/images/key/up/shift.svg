@@ -97,4 +97,12 @@
        rx="1.2350657"
        ry="1.2324586" />
   </g>
+  <path
+     style="fill:none;stroke:#c2c2c2;stroke-width:0.40111194;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 6.7799306,9.5151139 V 5.5952192 l 1.2903209,1.611092"
+     id="path873" />
+  <path
+     style="fill:none;stroke:#c2c2c2;stroke-width:0.40111194;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 6.7799311,9.5151139 V 5.5952398 L 5.4896094,7.2063147"
+     id="path875" />
 </svg>
