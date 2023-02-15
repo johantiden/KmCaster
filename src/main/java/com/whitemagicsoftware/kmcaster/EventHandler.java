@@ -38,6 +38,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.whitemagicsoftware.kmcaster.HardwareState.*;
 import static com.whitemagicsoftware.kmcaster.HardwareSwitch.*;
@@ -92,10 +93,10 @@ public final class EventHandler implements PropertyChangeListener {
 
       final var hwSwitch = config.getHardwareSwitch();
 
-      hwSwitch.ifPresentOrElse(
-        s -> mHardwareImages.get( s ).add( label ),
-        () -> mHardwareImages.get( KEY_REGULAR ).add( label )
-      );
+      hwSwitch.flatMap(
+        s -> Optional.ofNullable(mHardwareImages.get(s)))
+        .orElseGet(() -> mHardwareImages.get( KEY_REGULAR ))
+        .add(label);
     }
 
     putTimers( modifierSwitches(), userSettings.getDelayKeyModifier() );

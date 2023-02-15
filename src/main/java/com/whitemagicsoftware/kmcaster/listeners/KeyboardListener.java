@@ -245,17 +245,7 @@ public final class KeyboardListener
    * The key is the raw key code return from the {@link NativeKeyEvent}, the
    * value is the human-readable text to display on screen.
    */
-  private final static Map<Integer, HandedSwitch> MODIFIERS_WINDOWS =
-    Map.ofEntries(
-      entry( 160, KEY_SHIFT_LEFT ),
-      entry( 161, KEY_SHIFT_RIGHT ),
-      entry( 162, KEY_CTRL_LEFT ),
-      entry( 163, KEY_CTRL_RIGHT ),
-      entry( 164, KEY_ALT_LEFT ),
-      entry( 165, KEY_ALT_RIGHT ),
-      entry( 91, KEY_SUPER_LEFT ),
-      entry( 92, KEY_SUPER_RIGHT )
-    );
+  private final static Map<Integer, HandedSwitch> MODIFIERS_WINDOWS;
 
   /**
    * Whether a modifier key state is pressed or released depends on the state
@@ -266,19 +256,41 @@ public final class KeyboardListener
    * The 65511, 65512 are shifted alt key codes (a.k.a. the meta key).
    * </p>
    */
-  private final Map<Integer, HandedSwitch> MODIFIERS_LINUX =
-    Map.ofEntries(
-      entry( 65505, KEY_SHIFT_LEFT ),
-      entry( 65506, KEY_SHIFT_RIGHT ),
-      entry( 65507, KEY_CTRL_LEFT ),
-      entry( 65508, KEY_CTRL_RIGHT ),
-      entry( 65511, KEY_ALT_LEFT ),
-      entry( 65512, KEY_ALT_RIGHT ),
-      entry( 65513, KEY_ALT_LEFT ),
-      entry( 65514, KEY_ALT_RIGHT ),
-      entry( 65515, KEY_SUPER_LEFT ),
-      entry( 65516, KEY_SUPER_RIGHT )
-    );
+  private final static Map<Integer, HandedSwitch> MODIFIERS_LINUX;
+
+  static {
+    Map<Integer, HandedSwitch> modifiersLinux =
+            new HashMap<>(Map.ofEntries(
+                    entry( 65505, KEY_SHIFT_LEFT ),
+                    entry( 65506, KEY_SHIFT_RIGHT ),
+                    entry( 65507, KEY_CTRL_LEFT ),
+                    entry( 65508, KEY_CTRL_RIGHT ),
+                    entry( 65511, KEY_ALT_LEFT ),
+                    entry( 65512, KEY_ALT_RIGHT ),
+                    entry( 65513, KEY_ALT_LEFT ),
+                    entry( 65514, KEY_ALT_RIGHT )
+            ));
+
+    Map<Integer, HandedSwitch> modifiersWindows =
+            new HashMap<>( Map.ofEntries(
+                    entry( 160, KEY_SHIFT_LEFT ),
+                    entry( 161, KEY_SHIFT_RIGHT ),
+                    entry( 162, KEY_CTRL_LEFT ),
+                    entry( 163, KEY_CTRL_RIGHT ),
+                    entry( 164, KEY_ALT_LEFT ),
+                    entry( 165, KEY_ALT_RIGHT )
+            ));
+
+    if (SHOW_SUPER_KEY_AS_MODIFIER) {
+      modifiersWindows.put( 91, KEY_SUPER_LEFT );
+      modifiersWindows.put( 92, KEY_SUPER_RIGHT );
+      modifiersLinux.put( 65515, KEY_SUPER_LEFT );
+      modifiersLinux.put( 65516, KEY_SUPER_RIGHT );
+    }
+
+    MODIFIERS_WINDOWS = Map.copyOf( modifiersWindows );
+    MODIFIERS_LINUX = Map.copyOf( modifiersLinux );
+  }
 
   /**
    * Most recently pressed non-modifier key value, empty signifies release.
