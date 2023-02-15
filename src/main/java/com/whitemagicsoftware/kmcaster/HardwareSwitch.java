@@ -58,11 +58,16 @@ public enum HardwareSwitch {
       MOUSE_SCROLL_U, MOUSE_SCROLL_D, MOUSE_SCROLL_L, MOUSE_SCROLL_R
   };
 
-  private final static HardwareSwitch[] mKeyboardSwitches =
-      {KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT, KEY_REGULAR};
+  public static final boolean SHOW_SUPER_KEY_AS_MODIFIER = "true".equals(System.getenv("show_super"));
 
-  private final static HardwareSwitch[] mModifierSwitches =
-      {KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT};
+  private final static HardwareSwitch[] mKeyboardSwitches = SHOW_SUPER_KEY_AS_MODIFIER ?
+      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT, KEY_REGULAR} :
+      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT, KEY_REGULAR};
+
+  private final static HardwareSwitch[] mModifierSwitches = SHOW_SUPER_KEY_AS_MODIFIER ?
+      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT} :
+      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT};
+
 
   private final static HardwareSwitch[] mRegularSwitches =
       {KEY_REGULAR};
