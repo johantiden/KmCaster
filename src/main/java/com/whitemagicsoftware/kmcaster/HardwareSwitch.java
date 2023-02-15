@@ -45,7 +45,7 @@ public enum HardwareSwitch {
   MOUSE_SCROLL_R( "r" ),
   KEY_SHIFT( "shift", SHIFT_MASK ),
   KEY_CTRL( "ctrl", CTRL_MASK ),
-  KEY_SUPER( "super", META_MASK ),
+  KEY_SUPER( "❖", META_MASK ),
   KEY_ALT( "alt", ALT_MASK ),
   KEY_REGULAR( "regular" );
 

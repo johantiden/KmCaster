@@ -55,7 +55,7 @@ public final class HardwareImages {
       KEY_ALT, "medium",
       KEY_CTRL, "medium",
       KEY_SHIFT, "shift",
-      KEY_SUPER, "long",
+      KEY_SUPER, "short",
       KEY_REGULAR, "short"
   );
 
