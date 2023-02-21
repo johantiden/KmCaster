@@ -30,6 +30,7 @@ package com.whitemagicsoftware.kmcaster.listeners;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.whitemagicsoftware.kmcaster.HardwareSwitch;
+import com.whitemagicsoftware.kmcaster.Settings;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -241,57 +242,60 @@ public final class KeyboardListener
     }
   }
 
-  /**
-   * The key is the raw key code return from the {@link NativeKeyEvent}, the
-   * value is the human-readable text to display on screen.
-   */
-  private final static Map<Integer, HandedSwitch> MODIFIERS_WINDOWS;
-
-  /**
-   * Whether a modifier key state is pressed or released depends on the state
-   * of multiple keys (left and right). This map assigns the left and right
-   * key codes to the same modifier key so that the physical state can be
-   * represented by a single on-screen button (the logical state).
-   * <p>
-   * The 65511, 65512 are shifted alt key codes (a.k.a. the meta key).
-   * </p>
-   */
-  private final static Map<Integer, HandedSwitch> MODIFIERS_LINUX;
-
-  static {
-    Map<Integer, HandedSwitch> modifiersLinux =
-            new HashMap<>(Map.ofEntries(
-                    entry( 65505, KEY_SHIFT_LEFT ),
-                    entry( 65506, KEY_SHIFT_RIGHT ),
-                    entry( 65507, KEY_CTRL_LEFT ),
-                    entry( 65508, KEY_CTRL_RIGHT ),
-                    entry( 65511, KEY_ALT_LEFT ),
-                    entry( 65512, KEY_ALT_RIGHT ),
-                    entry( 65513, KEY_ALT_LEFT ),
-                    entry( 65514, KEY_ALT_RIGHT )
-            ));
-
-    Map<Integer, HandedSwitch> modifiersWindows =
-            new HashMap<>( Map.ofEntries(
-                    entry( 160, KEY_SHIFT_LEFT ),
-                    entry( 161, KEY_SHIFT_RIGHT ),
-                    entry( 162, KEY_CTRL_LEFT ),
-                    entry( 163, KEY_CTRL_RIGHT ),
-                    entry( 164, KEY_ALT_LEFT ),
-                    entry( 165, KEY_ALT_RIGHT )
-            ));
-
-    if (SHOW_SUPER_KEY_AS_MODIFIER) {
-      modifiersWindows.put( 91, KEY_SUPER_LEFT );
-      modifiersWindows.put( 92, KEY_SUPER_RIGHT );
-      modifiersLinux.put( 65515, KEY_SUPER_LEFT );
-      modifiersLinux.put( 65516, KEY_SUPER_RIGHT );
+  private static Map<Integer, HandedSwitch> initModifierRawCodes(boolean showSuperKeyAsModifier) {
+    if( IS_OS_LINUX ) {
+      /**
+       * The key is the raw key code return from the {@link NativeKeyEvent}, the
+       * value is the human-readable text to display on screen.
+       */
+      Map<Integer, HandedSwitch> modifiersLinux =
+              new HashMap<>(Map.ofEntries(
+                      entry(65505, KEY_SHIFT_LEFT),
+                      entry(65506, KEY_SHIFT_RIGHT),
+                      entry(65507, KEY_CTRL_LEFT),
+                      entry(65508, KEY_CTRL_RIGHT),
+                      entry(65511, KEY_ALT_LEFT),
+                      entry(65512, KEY_ALT_RIGHT),
+                      entry(65513, KEY_ALT_LEFT),
+                      entry(65514, KEY_ALT_RIGHT)
+              ));
+      if (showSuperKeyAsModifier) {
+        modifiersLinux.put(65515, KEY_SUPER_LEFT);
+        modifiersLinux.put(65516, KEY_SUPER_RIGHT);
+      }
+      return Map.copyOf(modifiersLinux);
     }
+    else if( IS_OS_WINDOWS ) {
+      /**
+       * Whether a modifier key state is pressed or released depends on the state
+       * of multiple keys (left and right). This map assigns the left and right
+       * key codes to the same modifier key so that the physical state can be
+       * represented by a single on-screen button (the logical state).
+       * <p>
+       * The 65511, 65512 are shifted alt key codes (a.k.a. the meta key).
+       * </p>
+       */
+      Map<Integer, HandedSwitch> modifiersWindows =
+              new HashMap<>(Map.ofEntries(
+                      entry(160, KEY_SHIFT_LEFT),
+                      entry(161, KEY_SHIFT_RIGHT),
+                      entry(162, KEY_CTRL_LEFT),
+                      entry(163, KEY_CTRL_RIGHT),
+                      entry(164, KEY_ALT_LEFT),
+                      entry(165, KEY_ALT_RIGHT)
+              ));
 
-    MODIFIERS_WINDOWS = Map.copyOf( modifiersWindows );
-    MODIFIERS_LINUX = Map.copyOf( modifiersLinux );
+      if (showSuperKeyAsModifier) {
+        modifiersWindows.put(91, KEY_SUPER_LEFT);
+        modifiersWindows.put(92, KEY_SUPER_RIGHT);
+      }
+      return Map.copyOf(modifiersWindows);
+    }
+    else {
+      System.out.println("Unsupported OS: " + System.getProperty("os.name"));
+      return Map.of();
+    }
   }
-
   /**
    * Most recently pressed non-modifier key value, empty signifies release.
    */
@@ -307,14 +311,17 @@ public final class KeyboardListener
 
   private final Set<HandedSwitch> mHandedModifiers = new HashSet<>();
 
+  private final Map<Integer, HandedSwitch> modifierRawCodes;
+
   /**
    * Creates a keyboard listener that publishes events when keys are either
    * pressed or released. The constructor initializes all modifier keys to
    * the released state because the native keyboard hook API does not offer
    * a way to query what keys are currently pressed.
    */
-  public KeyboardListener() {
-    for( final var key : modifierSwitches() ) {
+  public KeyboardListener(Settings userSettings) {
+    this.modifierRawCodes = initModifierRawCodes(userSettings.isSuperEnabled());
+    for( final var key : modifierSwitches(userSettings.isSuperEnabled()) ) {
       mModifiers.put( key, FALSE );
     }
   }
@@ -387,19 +394,8 @@ public final class KeyboardListener
   private void dispatchModifiers(
     final NativeKeyEvent e, final boolean pressed ) {
     final var rawCode = e.getRawCode();
-    final Map<Integer, HandedSwitch> map;
 
-    if( IS_OS_WINDOWS ) {
-      map = MODIFIERS_WINDOWS;
-    }
-    else if( IS_OS_LINUX ) {
-      map = MODIFIERS_LINUX;
-    }
-    else {
-      return;
-    }
-
-    final var key = map.get( rawCode );
+    final var key = modifierRawCodes.get( rawCode );
 
     if( key != null ) {
       if( pressed ) {
@@ -425,9 +421,7 @@ public final class KeyboardListener
 
   private boolean isRegular( final NativeKeyEvent e ) {
     final var rawCode = e.getRawCode();
-
-    return !((MODIFIERS_LINUX.containsKey( rawCode ) && IS_OS_LINUX) ||
-      (MODIFIERS_WINDOWS.containsKey( rawCode ) && IS_OS_WINDOWS));
+    return !modifierRawCodes.containsKey( rawCode );
   }
 
   /**

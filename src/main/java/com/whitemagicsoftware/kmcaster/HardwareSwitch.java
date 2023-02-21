@@ -58,17 +58,6 @@ public enum HardwareSwitch {
       MOUSE_SCROLL_U, MOUSE_SCROLL_D, MOUSE_SCROLL_L, MOUSE_SCROLL_R
   };
 
-  public static final boolean SHOW_SUPER_KEY_AS_MODIFIER = "true".equals(System.getenv("show_super"));
-
-  private final static HardwareSwitch[] mKeyboardSwitches = SHOW_SUPER_KEY_AS_MODIFIER ?
-      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT, KEY_REGULAR} :
-      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT, KEY_REGULAR};
-
-  private final static HardwareSwitch[] mModifierSwitches = SHOW_SUPER_KEY_AS_MODIFIER ?
-      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT} :
-      new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT};
-
-
   private final static HardwareSwitch[] mRegularSwitches =
       {KEY_REGULAR};
 
@@ -174,12 +163,16 @@ public enum HardwareSwitch {
    *
    * @return The complete list of keyboard keys.
    */
-  public static HardwareSwitch[] keyboardSwitches() {
-    return mKeyboardSwitches;
+  public static HardwareSwitch[] keyboardSwitches(boolean showSuperKeyAsModifier) {
+    return showSuperKeyAsModifier ?
+            new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT, KEY_REGULAR} :
+            new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT, KEY_REGULAR};
   }
 
-  public static HardwareSwitch[] modifierSwitches() {
-    return mModifierSwitches;
+  public static HardwareSwitch[] modifierSwitches(boolean showSuperKeyAsModifier) {
+    return showSuperKeyAsModifier ?
+            new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_SUPER, KEY_ALT} :
+            new HardwareSwitch[]{KEY_SHIFT, KEY_CTRL, KEY_ALT};
   }
 
   public static HardwareSwitch[] regularSwitches() {
