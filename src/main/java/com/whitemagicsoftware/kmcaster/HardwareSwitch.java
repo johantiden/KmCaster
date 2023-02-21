@@ -43,10 +43,10 @@ public enum HardwareSwitch {
   MOUSE_SCROLL_D( "d" ),
   MOUSE_SCROLL_L( "l" ),
   MOUSE_SCROLL_R( "r" ),
-  KEY_SHIFT( "shift", SHIFT_MASK ),
-  KEY_CTRL( "ctrl", CTRL_MASK ),
-  KEY_SUPER( "❖", META_MASK ),
-  KEY_ALT( "alt", ALT_MASK ),
+  KEY_SHIFT( "shift", "s", SHIFT_MASK ),
+  KEY_CTRL( "ctrl", "c", CTRL_MASK ),
+  KEY_SUPER( "❖", "❖", META_MASK ),
+  KEY_ALT( "alt", "a", ALT_MASK ),
   KEY_REGULAR( "regular" );
 
   private final static HardwareSwitch[] mMouseSwitches = {
@@ -67,6 +67,7 @@ public enum HardwareSwitch {
   private final static int NO_MASK = -1;
 
   private final String mName;
+  private final String mMiniName;
   private final int mMask;
 
   /**
@@ -75,7 +76,7 @@ public enum HardwareSwitch {
    * @param name The switch name.
    */
   HardwareSwitch( final String name ) {
-    this( name, NO_MASK );
+    this( name, null, NO_MASK );
   }
 
   /**
@@ -83,10 +84,12 @@ public enum HardwareSwitch {
    * to determine whether a modifier key is pressed.
    *
    * @param name The switch name.
+   * @param miniName The switch name to use in the UI, if the user has specified the --mini flag.
    * @param mask Modifier key bitmask.
    */
-  HardwareSwitch( final String name, final int mask ) {
+  HardwareSwitch( final String name, final String miniName, final int mask ) {
     mName = name;
+    mMiniName = miniName;
     mMask = mask;
   }
 
@@ -204,9 +207,14 @@ public enum HardwareSwitch {
    *
    * @return The switch name with its first letter capitalized.
    */
-  public String toTitleCase() {
-    final var s = toString().toLowerCase();
-    return Character.toTitleCase( s.charAt( 0 ) ) + s.substring( 1 );
+  public String toTitleCase( final Settings userSettings ) {
+    if (userSettings.isMiniEnabled()) {
+      return mMiniName;
+    } 
+    else {
+      final var s = toString().toLowerCase();
+      return Character.toTitleCase( s.charAt( 0 )) + s.substring( 1 );
+    }
   }
 
   /**

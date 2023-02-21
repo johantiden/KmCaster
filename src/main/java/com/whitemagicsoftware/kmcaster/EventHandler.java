@@ -62,28 +62,28 @@ public final class EventHandler implements PropertyChangeListener {
     SWITCH_RELEASED, COLOUR_KEY_UP
   );
 
-  /**
-   * This is used to temporarily set the mouse to the released state.
-   */
-  public static final HardwareSwitchState MOUSE_RELEASED =
-    new HardwareSwitchState( MOUSE_EXTRA, SWITCH_RELEASED );
+  private static HardwareSwitchState mouseReleased( final Settings userSettings ) {
+    return new HardwareSwitchState( MOUSE_EXTRA, SWITCH_RELEASED, userSettings );
+  }
 
   private final HardwareImages mHardwareImages;
   private final AutofitLabel[] mLabels = new AutofitLabel[ LabelConfig.size() ];
   private final Map<HardwareSwitch, ResetTimer> mTimers = new HashMap<>();
   private final Deque<HardwareSwitch> mMouseActions = new LinkedList<>();
   private final ConsecutiveEventCounter<String> mKeyCounter;
+  private final Settings userSettings;
 
   public EventHandler(
     final HardwareImages hardwareImages, final Settings userSettings ) {
     mHardwareImages = hardwareImages;
     mKeyCounter = new ConsecutiveEventCounter<>( userSettings.getKeyCount() );
+    this.userSettings = userSettings;
 
     final var keyColour = KEY_COLOURS.get( SWITCH_PRESSED );
     final var font = userSettings.createFont();
 
     for( final var config : LabelConfig.values() ) {
-      final var label = new AutofitLabel( config.toTitleCase(), font );
+      final var label = new AutofitLabel( config.toTitleCase( userSettings ), font );
 
       label.setVerticalAlignment( config.getVerticalAlign() );
       label.setHorizontalAlignment( config.getHorizontalAlign() );
@@ -140,7 +140,7 @@ public final class EventHandler implements PropertyChangeListener {
     final var hwState = HardwareState.valueFrom( newValue );
 
     final var switchState = new HardwareSwitchState(
-      hwSwitch, hwState, switchValue );
+      hwSwitch, hwState, switchValue, userSettings );
 
     // Get the mouse timer, modifier key timer, or non-modifier key timer.
     final var timer = getTimer( hwSwitch );
@@ -261,7 +261,7 @@ public final class EventHandler implements PropertyChangeListener {
     final var hwState = switchState.getHardwareState();
 
     if( hwSwitch == MOUSE_EXTRA ) {
-      final var config = LabelConfig.valueFrom( hwSwitch );
+      final var config = LabelConfig.valueFrom( hwSwitch, userSettings );
       final var button = getLabel( config );
 
       if( hwState == SWITCH_PRESSED ) {
@@ -274,14 +274,14 @@ public final class EventHandler implements PropertyChangeListener {
       }
     }
 
-    final var component = getHardwareComponent( MOUSE_RELEASED );
+    final var component = getHardwareComponent( mouseReleased( userSettings ) );
     final var repaintManager = currentManager( component );
 
-    component.setState( new HardwareSwitchState( hwSwitch, SWITCH_RELEASED ) );
+    component.setState( new HardwareSwitchState( hwSwitch, SWITCH_RELEASED, userSettings ) );
     repaintManager.paintDirtyRegions();
 
     for( final var action : mMouseActions ) {
-      component.setState( new HardwareSwitchState( action, SWITCH_PRESSED ) );
+      component.setState( new HardwareSwitchState( action, SWITCH_PRESSED, userSettings ) );
       repaintManager.paintDirtyRegions();
     }
   }
