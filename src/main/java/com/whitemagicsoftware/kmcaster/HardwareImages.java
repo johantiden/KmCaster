@@ -105,7 +105,7 @@ public final class HardwareImages {
       mSwitches.put( hwSwitch, mouseStates );
     }
 
-    for( final var key : keyboardSwitches(userSettings.isSuperEnabled()) ) {
+    for( final var key : keyboardSwitches( userSettings.isSuperEnabled() ) ) {
       final var stateOn = state( key, SWITCH_PRESSED );
       final var stateOff = state( key, SWITCH_RELEASED );
       final var imageDn = keyDnImage( FILE_NAME_PREFIXES.get( key ) );

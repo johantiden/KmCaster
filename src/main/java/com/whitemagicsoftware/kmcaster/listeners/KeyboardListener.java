@@ -312,6 +312,7 @@ public final class KeyboardListener
   private final Set<HandedSwitch> mHandedModifiers = new HashSet<>();
 
   private final Map<Integer, HandedSwitch> modifierRawCodes;
+
   /**
    * Creates a keyboard listener that publishes events when keys are either
    * pressed or released. The constructor initializes all modifier keys to
