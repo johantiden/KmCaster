@@ -99,7 +99,7 @@ public final class EventHandler implements PropertyChangeListener {
         .add(label);
     }
 
-    putTimers( modifierSwitches(), userSettings.getDelayKeyModifier() );
+    putTimers( modifierSwitches(userSettings.isSuperEnabled()), userSettings.getDelayKeyModifier() );
     putTimers( regularSwitches(), userSettings.getDelayKeyRegular() );
     putTimers( mouseSwitches(), userSettings.getDelayMouseButton() );
     putTimers( scrollSwitches(), userSettings.getDelayMouseScroll() );

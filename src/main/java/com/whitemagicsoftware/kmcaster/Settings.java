@@ -210,11 +210,24 @@ public final class Settings implements Callable<Integer> {
   )
   private int mDelayMouseScroll = 300;
 
+  /**
+   * Show the Super key as a modifier
+   */
+  @CommandLine.Option(
+          names = {"-S", "--super"},
+          description =
+                  "Show the Super key as a modifier (${DEFAULT-VALUE})",
+          paramLabel = "Boolean",
+          defaultValue = "false"
+  )
+  private boolean mSuper = false;
+
   public Settings( final KmCaster kmCaster ) {
     assert kmCaster != null;
 
     mKmCaster = kmCaster;
   }
+
 
   /**
    * Invoked after the command-line arguments are parsed to launch the
@@ -284,5 +297,9 @@ public final class Settings implements Callable<Integer> {
 
   public boolean isDebugEnabled() {
     return mDebug;
+  }
+
+  public boolean isSuperEnabled() {
+    return mSuper;
   }
 }
