@@ -41,8 +41,10 @@ public final class HardwareSwitchState {
    * using an empty string for the value.
    */
   public HardwareSwitchState(
-      final HardwareSwitch hardwareSwitch, final HardwareState hardwareState ) {
-    this( hardwareSwitch, hardwareState, "" );
+          final HardwareSwitch hardwareSwitch,
+          final HardwareState hardwareState,
+          final Settings userSettings ) {
+    this( hardwareSwitch, hardwareState, "", userSettings );
   }
 
   /**
@@ -59,14 +61,15 @@ public final class HardwareSwitchState {
   public HardwareSwitchState(
       final HardwareSwitch hwSwitch,
       final HardwareState hwState,
-      final String value ) {
+      final String value,
+      final Settings userSettings ) {
     assert hwSwitch != null;
     assert hwState != null;
     assert value != null;
 
     mHardwareSwitch = hwSwitch;
     mHardwareState = hwState;
-    mValue = hwSwitch.isModifier() ? hwSwitch.toTitleCase() : value;
+    mValue = hwSwitch.isModifier() ? hwSwitch.toTitleCase( userSettings ) : value;
   }
 
   /**

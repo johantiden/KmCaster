@@ -70,14 +70,15 @@ public final class HardwareImages {
    * icon.
    * </p>
    */
-  private final static Map<HardwareSwitch, Insets> SWITCH_INSETS = Map.of(
-      KEY_ALT, new Insets( 10, 11, 12, 11 ),
-      KEY_CTRL, new Insets( 10, 11, 12, 11 ),
-      KEY_SHIFT, new Insets( 10, 50, 12, 11 ),
-      KEY_SUPER, new Insets( 10, 11, 12, 11 ),
-      KEY_REGULAR, new Insets( 3, 7, 6, 7 ),
-      MOUSE_EXTRA, new Insets( 27, 5, 11, 5 )
-  );
+  private static Insets getSwitchInsets( final HardwareSwitch hwSwitch, final Settings userSettings ) {
+    Insets regular = new Insets(10, 11, 12, 11);
+    return switch ( hwSwitch ) {
+      case KEY_SHIFT -> userSettings.isMiniEnabled() ? regular : new Insets( 10, 50, 12, 11 );
+      case KEY_REGULAR -> new Insets( 3, 7, 6, 7 );
+      case MOUSE_EXTRA -> new Insets( 27, 5, 11, 5 );
+      default -> regular;
+    };
+  }
 
   private final static SvgRasterizer sRasterizer = new SvgRasterizer();
 
@@ -93,11 +94,11 @@ public final class HardwareImages {
     final var mouseReleased = mouseImage( "0" );
     final var mouseScale = mouseReleased.getValue();
     final var mouseStates =
-        createHardwareComponent( MOUSE_EXTRA, mouseScale );
+        createHardwareComponent( MOUSE_EXTRA, mouseScale, userSettings );
 
     for( final var hwSwitch : mouseSwitches() ) {
-      final var stateOn = state( hwSwitch, SWITCH_PRESSED );
-      final var stateOff = state( hwSwitch, SWITCH_RELEASED );
+      final var stateOn = state( hwSwitch, SWITCH_PRESSED, userSettings );
+      final var stateOff = state( hwSwitch, SWITCH_RELEASED, userSettings );
       final var imageDn = mouseImage( hwSwitch.toString() );
 
       mouseStates.put( stateOn, imageDn.getKey() );
@@ -106,12 +107,12 @@ public final class HardwareImages {
     }
 
     for( final var key : keyboardSwitches( userSettings.isSuperEnabled() ) ) {
-      final var stateOn = state( key, SWITCH_PRESSED );
-      final var stateOff = state( key, SWITCH_RELEASED );
-      final var imageDn = keyDnImage( FILE_NAME_PREFIXES.get( key ) );
-      final var imageUp = keyUpImage( FILE_NAME_PREFIXES.get( key ) );
+      final var stateOn = state( key, SWITCH_PRESSED, userSettings );
+      final var stateOff = state( key, SWITCH_RELEASED, userSettings );
+      final var imageDn = keyDnImage( userSettings.isMiniEnabled() ? "short" : FILE_NAME_PREFIXES.get( key ) );
+      final var imageUp = keyUpImage( userSettings.isMiniEnabled() ? "short" : FILE_NAME_PREFIXES.get( key ) );
       final var scale = imageDn.getValue();
-      final var keyStates = createHardwareComponent( key, scale );
+      final var keyStates = createHardwareComponent( key, scale, userSettings );
 
       keyStates.put( stateOn, imageDn.getKey() );
       keyStates.put( stateOff, imageUp.getKey() );
@@ -119,14 +120,15 @@ public final class HardwareImages {
     }
   }
 
-  private PaddedInsets createInsets( final HardwareSwitch hwSwitch ) {
-    return new PaddedInsets( SWITCH_INSETS.get( hwSwitch ) );
+  private PaddedInsets createInsets( final HardwareSwitch hwSwitch, final Settings userSettings ) {
+    return new PaddedInsets( getSwitchInsets( hwSwitch, userSettings ) );
   }
 
   private HardwareComponent<HardwareSwitchState, Image> createHardwareComponent(
       final HardwareSwitch hwSwitch,
-      final DimensionTuple scale ) {
-    final var insets = createInsets( hwSwitch );
+      final DimensionTuple scale,
+      final Settings userSettings ) {
+    final var insets = createInsets( hwSwitch, userSettings);
     final var scaledInsets = insets.scale( scale );
 
     return new HardwareComponent<>( scaledInsets );
@@ -138,8 +140,8 @@ public final class HardwareImages {
   }
 
   private HardwareSwitchState state(
-      final HardwareSwitch name, final HardwareState state ) {
-    return new HardwareSwitchState( name, state );
+          final HardwareSwitch name, final HardwareState state, final Settings userSettings ) {
+    return new HardwareSwitchState( name, state, userSettings );
   }
 
   private Pair<Image, DimensionTuple> mouseImage( final String prefix ) {

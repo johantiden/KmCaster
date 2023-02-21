@@ -77,14 +77,14 @@ public enum LabelConfig {
     mHorizontalAlign = hAlign;
   }
 
-  static LabelConfig valueFrom( final HardwareSwitch hwSwitch ) {
+  static LabelConfig valueFrom( final HardwareSwitch hwSwitch, final Settings userSettings ) {
     for( final var lc : values() ) {
       if( lc.isHardwareSwitch( hwSwitch ) ) {
         return lc;
       }
     }
 
-    throw new NoSuchElementException( hwSwitch.toTitleCase() );
+    throw new NoSuchElementException( hwSwitch.toTitleCase( userSettings ) );
   }
 
   /**
@@ -121,8 +121,8 @@ public enum LabelConfig {
    * @return The title case version of the hardware switch, or a space if
    * there is no direct correlation.
    */
-  String toTitleCase() {
-    return mHardwareSwitch == null ? " " : mHardwareSwitch.toTitleCase();
+  String toTitleCase( final Settings userSettings ) {
+    return mHardwareSwitch == null ? " " : mHardwareSwitch.toTitleCase( userSettings );
   }
 
   /**

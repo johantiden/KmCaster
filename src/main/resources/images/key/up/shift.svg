@@ -8,8 +8,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    height="60"
-   viewBox="0 0 15.875 15.875"
-   width="60"
+   viewBox="0 0 37.042 15.875"
+   width="140"
    version="1.1"
    id="svg25"
    sodipodi:docname="long.svg"
@@ -72,7 +72,7 @@
     <rect
        style="fill:#515151;fill-opacity:1;stroke:#191d22;stroke-width:0.38100343;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke;stop-color:#000000"
        id="rect1485"
-       width="14.324561"
+       width="34.603992"
        height="14.324561"
        x="1.3201692"
        y="0.72356796"
@@ -81,7 +81,7 @@
     <rect
        style="fill:#546a79;fill-opacity:1;stroke:none;stroke-width:0.38100343;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1489"
-       width="14.36"
+       width="34.612663"
        height="13.908047"
        x="1.3201692"
        y="1.1400833"
@@ -90,7 +90,7 @@
     <rect
        style="fill:#38454f;fill-opacity:1;stroke:none;stroke-width:0.38100343;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1487"
-       width="14.36"
+       width="34.622524"
        height="13.911588"
        x="1.3201692"
        y="0.72356796"
@@ -98,12 +98,10 @@
        ry="1.2324586" />
   </g>
   <path
-     transform="translate(1.5)"
      style="fill:none;stroke:#c2c2c2;stroke-width:0.40111194;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 6.7799306,9.5151139 V 5.5952192 l 1.2903209,1.611092"
      id="path873" />
   <path
-     transform="translate(1.5)"
      style="fill:none;stroke:#c2c2c2;stroke-width:0.40111194;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 6.7799311,9.5151139 V 5.5952398 L 5.4896094,7.2063147"
      id="path875" />

@@ -185,6 +185,18 @@ public final class Settings implements Callable<Integer> {
   private int mDelayKeyModifier = 150;
 
   /**
+   * Mini mode - smaller modifier key indicators.
+   */
+  @CommandLine.Option(
+          names = {"-M", "--mini"},
+          description =
+                  "Mini mode - smaller modifier key indicators (${DEFAULT-VALUE})",
+          paramLabel = "Boolean",
+          defaultValue = "false"
+  )
+  private boolean mMini = false;
+
+  /**
    * Application height in pixels. Images are scaled to this height, maintaining
    * aspect ratio. The height constrains the width, so as long as the width
    * is large enough, the application's window will adjust to fit.
@@ -301,5 +313,9 @@ public final class Settings implements Callable<Integer> {
 
   public boolean isSuperEnabled() {
     return mSuper;
+  }
+
+  public boolean isMiniEnabled() {
+    return mMini;
   }
 }
